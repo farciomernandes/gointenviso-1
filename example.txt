@@ -1,0 +1,61 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func task(name string) {
+	for i := 0; i < 10; i++ {
+		fmt.Printf("%d: Task %s is running\n", i, name)
+		time.Sleep((time.Second))
+	}
+}
+
+// Para criar uma nova threading e fazer uma função rodar em  acionar uma tarefa em multithreading
+// basta adicionar um prefixo "go" antes de startar a função;
+func main() {
+	//go task("A") //go routines / green threads
+	//go task("B")
+	//task("C")
+
+	// ---------- É possível criar "CANAIS" que permitem uma thread ter acesso a uma variavel de outra thread
+	canal := make(chan string) //Cria um canal
+
+	go func() { //Funcao anonima em uma outra thread
+		canal <- "Veio da t2" //thread 2 atualiza o valor de canal que foi criada em outra thread
+	}()
+
+	fmt.Println(<-canal)
+}
+
+/* ----------------------------------- -------- Explicação sobre os ponteiros em GO ---------------------------------------------------------------------------------------------------------
+
+
+type Carro struct {
+	Marca string
+}
+
+// Ao declarar "c" com um tipo sem asterisco, todas as mudanças só acontecem no contexto do método
+// pois o (c Carro) aponta para o um endereço de memória diferente da variável passada como parametro
+func (c Carro) MudarMarcaLocal(marca string) {
+	c.Marca = marca
+	fmt.Println(c.Marca)
+}
+
+// Ao declarar "c" com um tipo com asterisco, todas as mudanças acontecem no variável original no contexto de onde o método foi chamado
+// pois o (c *Carro) aponta para o mesmo endereço de memória da variável passada como parametro
+func (c Carro) MudarMarcaGeral(marca string) {
+	c.Marca = marca
+	fmt.Println(c.Marca)
+}
+
+func main() {
+	carro := Carro{Marca: "Fiat"}
+	//carro.MudarMarcaLocal("Ford")
+	carro.MudarMarcaGeral("Ford")
+	fmt.Println(carro.Marca)
+}
+
+
+*/

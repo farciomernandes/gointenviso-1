@@ -11,12 +11,12 @@ type Order struct {
 
 // Como se fosse um construtor. Retorna 2 valores
 func NewOrder(id string, price float64, tax float64) (*Order, error) {
-	order := &Order {
-		ID:	id,
-		Price:	price,
-		Tax:	tax,
+	order := &Order{
+		ID:    id,
+		Price: price,
+		Tax:   tax,
 	}
-	
+
 	err := order.isValid()
 	if err != nil {
 		return nil, err
@@ -38,7 +38,13 @@ func (o *Order) isValid() error {
 	return nil
 }
 
-func (o *Order) CalculateFinalPrice() error{
+/*
+Quando uma função tem o (x *Struct) significa que ele é um método da struct criada
+
+No caso do NewOrder funciona assim: order := NewOrder(...)
+No caso do isValid funciona assim: order := NewOrder(...);  order.isValid()
+*/
+func (o *Order) CalculateFinalPrice() error {
 	o.FinalPrice = o.Price + o.Tax
 	err := o.isValid()
 
