@@ -18,6 +18,7 @@ func main() {
 		panic(err)
 	}
 	defer db.Close()
+
 	repository := database.NewOrderRepository(db)
 	uc := usecase.CalculateFinalPriceUseCase{OrderRepository: repository}
 	ch, err := rabbitmq.OpenChannel()
@@ -31,7 +32,7 @@ func main() {
 	/*
 		Agora cria-se um canal de comunicação para conseguir falar com o rabbitmq e consumir as mensagens
 	*/
-	out := make(chan amqp.Delivery) // chanel
+	out := make(chan amqp.Delivery) // Cria uma chanel
 	go rabbitmq.Consume(ch, out)    //Consume na THREADING 2
 
 	for msg := range out {
@@ -50,6 +51,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		//Ack => Retira da fila do rabbitmq
 		msg.Ack(false)
 		fmt.Println(outputDTO) // Imprime na THREADING 1
 	}

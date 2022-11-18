@@ -45,7 +45,7 @@ func (c Carro) MudarMarcaLocal(marca string) {
 
 // Ao declarar "c" com um tipo com asterisco, todas as mudanças acontecem no variável original no contexto de onde o método foi chamado
 // pois o (c *Carro) aponta para o mesmo endereço de memória da variável passada como parametro
-func (c Carro) MudarMarcaGeral(marca string) {
+func (c *Carro) MudarMarcaGeral(marca string) {
 	c.Marca = marca
 	fmt.Println(c.Marca)
 }
